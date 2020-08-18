@@ -1,0 +1,34 @@
+{
+    "compileOnSave": true,
+    "defaultSeverity": "warning",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**"
+        ]
+    },
+    "rules": {
+        "no-empty": false,
+        "no-return-await": false,
+        "indent": [true, "spaces", 4],
+        "interface-name": false,
+        "no-consecutive-blank-lines": false,
+        "object-literal-sort-keys": false,
+        "ordered-imports": false,
+        "quotemark": [true, "single"],
+        "no-console": false,
+        "trailing-comma": false,
+        "whitespace": false,
+        "arrow-parens": false,
+        "member-ordering": false,
+        "import-spacing": true,
+        "comment-format": [true, "check-space"],
+        "max-line-length": false,
+        "prefer-const": false,
+        "no-empty-interface": false,
+        "prefer-for-of": false,
+        "forin": false
+    }
+}

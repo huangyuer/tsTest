@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>工作台</title>
+    <% if (htmlWebpackPlugin.options.production) { %>
+      <script src="<%= BASE_URL %>tj.js?v=1.0.1"></script>
+    <% } %>
+    <script>
+      var list = window.location.search.replace('?', '').split('&');
+      window._query = {};
+      for (var i = 0;i < list.length;++i) {
+        var q = list[i].split('=');
+        if (!q[0]) continue;
+        window._query[q[0]] = q[1];
+      }
+      var hashList = (window.location.hash.split('?')[1] || '').split('&');
+      window._hquery = {};
+      for (var i = 0;i < hashList.length;++i) {
+        var q = hashList[i].split('=');
+        if (!q[0]) continue;
+        window._hquery[q[0]] = q[1];
+      }
+      var log = window.console.log;
+      window.console.log = function() {
+        if (window._query.debug) {
+          log.apply(this, arguments)
+        }
+      }
+      window.staticCdnUrl = "<%= htmlWebpackPlugin.options.cdnUrl %>"
+      window.VDIALOG_INJECT = {}
+      window.__loadAssetsList = function (type, list, callback) {
+          var loaded = 0;
+          var loadCallcack = function() {
+              loaded++;
+              if (loaded >= list.length) {
+                  callback();
+              } else {
+                  loadNext();
+              }
+          }
+          var loadNext = function() {
+              if (type === 'script') {
+                  window.__loadScript(list[loaded], loadCallcack)
+              } else if (type === 'css') {
+                  window.__loadCss(list[loaded], loadCallcack)
+              } else {
+                  loadNext();
+              }
+          };
+          loadNext();
+      };
+      window.__loadScript = function(src, callback) {
+          var s = document.createElement('script');
+          s.async = false;
+          s.src = src;
+          s.addEventListener('load', function() {
+              s.removeEventListener('load', arguments.callee, false);
+              callback();
+          }, false);
+          document.head.appendChild(s);
+      };
+      window.__loadCss = function(url, callback) {
+          var link = document.createElement('link');
+          link.rel = "stylesheet";
+          link.type = "text/css";
+          link.href = url;
+          link.addEventListener('load', function () {
+              link.removeEventListener('load', arguments.callee, false);
+              callback();
+          }, false);
+          document.head.appendChild(link);
+      };
+      window.__loadAssetsListFromCdn = function(type, list, callback) {
+        for (var i = 0;i <list.length;++i) {
+          list[i] = "<%= htmlWebpackPlugin.options.cdnUrl %>" + list[i];
+        }
+        window.__loadAssetsList(type, list, callback);
+      };
+      window.__loadScriptFromCdn = function(name, callback) {
+          window.__loadScript("<%= htmlWebpackPlugin.options.cdnUrl %>" + name, callback);
+      };
+      window.__loadCssFromCdn = function(name, callback) {
+          window.__loadCss("<%= htmlWebpackPlugin.options.cdnUrl %>" + name, callback);
+      };
+    </script>
+    <% if (htmlWebpackPlugin.options.production) { %>
+      <script src="<%= htmlWebpackPlugin.options.cdnUrl %>/static/vue@2.6.11.runtime.min.js"></script>
+    <% } else { %>
+      <script src="<%= htmlWebpackPlugin.options.cdnUrl %>/static/vue@2.6.11.runtime.js"></script>
+    <% } %>
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.cdnUrl %>/static/element-ui/element-ui@2.13.1.css?v=2"></link>
+    <script src="<%= htmlWebpackPlugin.options.cdnUrl %>/static/element-ui/element-ui@2.13.1.js"></script>
+    <script src="<%= htmlWebpackPlugin.options.cdnUrl %>/static/sortable-1.8.4.js"></script>
+    <script src="<%= htmlWebpackPlugin.options.cdnUrl %>/static/vuedraggable.umd.min-2.20.0.js"></script>
+    <% if (htmlWebpackPlugin.options.mode === "dev") { %>
+      <noscript>inject plugin assets</noscript>
+    <% } %>
+    <% if (htmlWebpackPlugin.options.production) { %>
+      <script>
+        window.__loadScript('https://js.fundebug.cn/fundebug.2.4.0.min.js', function() {
+          fundebug.apikey = "c14771868544091abf364ff8971fab876bfeec0362794dc76fb289ee6d4e66ed";
+        });
+      </script>
+    <% } %>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <noscript>jscss2jsonplugin inject js</noscript>
+  </body>
+</html>

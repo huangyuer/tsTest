@@ -1,0 +1,62 @@
+.copy-qrcode-url {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 10px;
+    > .img {
+        width: 100px;
+        margin-bottom: 10px;
+    }
+}
+
+.el-table__body,
+.el-table__footer,
+.el-table__header {
+    table-layout: fixed !important;
+}
+// 之所以这样写，是因为safari浏览器有个奇怪的bug
+// el-table使用了fixed固定列后，会导致布局错乱
+// 得先强制设置table-layout: auto !important;
+// 待表格首次渲染完，去掉fixed-el-table类，强制改变为table-layout: fixed !important;
+// 这样表格才会正常显示
+.fixed-el-table {
+    .el-table__body,
+    .el-table__footer,
+    .el-table__header {
+        table-layout: auto !important;
+    }
+}
+
+.el-drawer {
+    outline: none !important;
+}
+
+
+.el-collapse-item__header__arrow {
+    color: #666666;
+}
+.el-collapse-item {
+    &__header {
+        border-color: #EEEEEE;
+        color: #333333;
+        font-weight: bold;
+        padding: 0px 20px;
+        height: 36px;
+        line-height: 36px;
+        .el-collapse-item__header__arrow {
+            margin-right: 20px;
+        }
+    }
+    &__wrap {
+        border-color: #EEEEEE;
+        background-color: white;
+    }
+    &__content {
+        padding: 0px;
+        font-size: 14px;
+    }
+}
+.el-collapse {
+    border-left: 0;
+    border-right: 0;
+}
